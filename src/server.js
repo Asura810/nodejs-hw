@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { isCelebrateError } from 'celebrate';
+import { errors } from 'celebrate';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
 import notesRoutes from './routes/notesRoutes.js';
@@ -18,19 +18,10 @@ app.use(logger);
 const PORT = process.env.PORT || 3000;
 
 app.use(notesRoutes);
+
+app.use(errors());
+
 app.use(notFoundHandler);
-
-app.use((err, req, res, next) => {
-  if (isCelebrateError(err)) {
-    return res.status(400).json({
-      message: 'Validation error',
-      details: err.details,
-    });
-  }
-
-  next(err);
-});
-
 app.use(errorHandler);
 
 const startServer = async () => {

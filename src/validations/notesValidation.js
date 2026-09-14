@@ -16,13 +16,15 @@ export const getAllNotesSchema = Joi.object({
 });
 
 export const noteIdSchema = Joi.object({
-  noteId: Joi.string().custom((value, helpers) => {
-    if (!isValidObjectId(value)) {
-      return helpers.error('any.invalid');
-    }
+  noteId: Joi.string()
+    .custom((value, helpers) => {
+      if (!isValidObjectId(value)) {
+        return helpers.error('any.invalid');
+      }
 
-    return value;
-  }),
+      return value;
+    })
+    .required(),
 });
 
 export const createNoteSchema = Joi.object({
@@ -36,14 +38,6 @@ export const createNoteSchema = Joi.object({
 });
 
 export const updateNoteSchema = Joi.object({
-  noteId: Joi.string().custom((value, helpers) => {
-    if (!isValidObjectId(value)) {
-      return helpers.error('any.invalid');
-    }
-
-    return value;
-  }),
-
   title: Joi.string().min(1),
 
   content: Joi.string().allow(''),
