@@ -1,10 +1,11 @@
 import { Router } from 'express';
+
 import { celebrate } from 'celebrate';
 
 import {
   registerUser,
   loginUser,
-  refreshSession,
+  refreshUserSession,
   logoutUser,
 } from '../controllers/authController.js';
 
@@ -31,7 +32,7 @@ router.post(
   loginUser,
 );
 
-router.post('/auth/refresh', refreshSession);
+router.post('/auth/refresh', refreshUserSession);
 
 router.post('/auth/logout', logoutUser);
 

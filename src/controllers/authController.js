@@ -60,7 +60,7 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-export const refreshSession = async (req, res, next) => {
+export const refreshUserSession = async (req, res, next) => {
   try {
     const { sessionId, refreshToken } = req.cookies;
 
@@ -78,6 +78,26 @@ export const refreshSession = async (req, res, next) => {
     }
 
     if (session.refreshTokenValidUntil < new Date()) {
+      await Session.deleteOne({ _id: session._id });
+
+      res.clearCookie('sessionId', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+      });
+
+      res.clearCookie('accessToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+      });
+
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+      });
+
       return next(createHttpError(401, 'Session token expired'));
     }
 
