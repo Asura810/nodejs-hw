@@ -11,6 +11,7 @@ import { authenticate } from './middleware/authenticate.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './middleware/logger.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 
@@ -23,6 +24,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(authRoutes);
 app.use('/notes', authenticate, notesRoutes);
+app.use(userRoutes);
 
 app.use(errors());
 app.use(notFoundHandler);
